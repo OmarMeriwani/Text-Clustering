@@ -120,23 +120,24 @@ pylab.close()
 i += 1
 
 # 3 iterations ####################
-km = KMeans(init='random', n_clusters=num_clusters, verbose=1,
-            n_init=1, max_iter=10,
-            random_state=seed)
-km.fit(sp.array(list(zip(x, y))))
+for j in range(10,50,10):
+    km = KMeans(init='random', n_clusters=num_clusters, verbose=1,
+                n_init=1, max_iter=(i*j),
+                random_state=seed)
+    km.fit(sp.array(list(zip(x, y))))
 
-Z = km.predict(sp.c_[mx.ravel(), my.ravel()]).reshape(mx.shape)
+    Z = km.predict(sp.c_[mx.ravel(), my.ravel()]).reshape(mx.shape)
 
-plot_clustering(x, y, "Clustering iteration 10", km=km)
-pylab.imshow(Z, interpolation='nearest',
-             extent=(mx.min(), mx.max(), my.min(), my.max()),
-             cmap=pylab.cm.Blues,
-             aspect='auto', origin='lower')
+    plot_clustering(x, y, "Clustering iteration 10", km=km)
+    pylab.imshow(Z, interpolation='nearest',
+                 extent=(mx.min(), mx.max(), my.min(), my.max()),
+                 cmap=pylab.cm.Blues,
+                 aspect='auto', origin='lower')
 
-pylab.scatter(km.cluster_centers_[:, 0], km.cluster_centers_[:, 1],
-              marker='x', linewidth=2, s=100, color='black')
-pylab.savefig(os.path.join(CHART_DIR, "1400_03_0%i.png" % i))
-pylab.clf()
-pylab.close()
+    pylab.scatter(km.cluster_centers_[:, 0], km.cluster_centers_[:, 1],
+                  marker='x', linewidth=2, s=100, color='black')
+    pylab.savefig(os.path.join(CHART_DIR, "1400_03_0%i.png" % i))
+    pylab.clf()
+    pylab.close()
 
-i += 1
+    i += 1
